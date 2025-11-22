@@ -16,9 +16,6 @@ def main():
 
     print(f"Загружено матчей: {len(data)}")
 
-    print("\nПервые строки данных:")
-    print(data.head())
-
     analyzer = Analyzer()
     analyzer.train_model(data)
 
