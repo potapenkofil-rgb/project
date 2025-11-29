@@ -4,36 +4,39 @@ from visualizer import Visualizer
 import os
 
 def main():
-    filename = 'matches.csv'
+    filename = "matches.csv"
 
     if not os.path.exists(filename):
-        print(f"Ошибка: файл {filename} не найден.")
+        print(f"Файл {filename} не найден.")
         return
 
     loader = DataLoader(filename)
     data = loader.load_data()
     data = loader.clean_data()
 
-    print(f"Загружено матчей: {len(data)}")
+    if data is None:
+        print("Данные не загружены. Завершение программы.")
+        return
+
+    print("\nПервые 5 записей:")
+    print(data.head())
 
     analyzer = Analyzer()
     analyzer.train_model(data)
 
-    input_data = {
-        'team1_goals': 2,
-        'team2_goals': 1,
-        'shots': 10,
-        'possession': 55
+    match_example = {
+        "team1_goals": 2,
+        "team2_goals": 1,
+        "shots": 12,
+        "possession": 58
     }
 
-    try:
-        prediction = analyzer.predict_outcome(input_data)
-        print("\nПрогноз исхода:", prediction)
-    except Exception as e:
-        print("\nОшибка при прогнозе:", e)
+    prediction = analyzer.predict_outcome(match_example)
+    print("\nПрогноз на матч:")
+    print(prediction)
 
     visualizer = Visualizer()
     visualizer.plot_team_stats(data)
-    
+
 if __name__ == "__main__":
     main()
